@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - JobHunt AI{% endblock %}
+
+{% block content %}
+<h2>Dashboard</h2>
+
+<div class="row mt-4">
+    <div class="col-md-3">
+        <div class="card stat-card blue">
+            <div class="card-body">
+                <h6 class="text-muted">Total Ofertas</h6>
+                <h3>{{ stats.total_jobs }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card green">
+            <div class="card-body">
+                <h6 class="text-muted">Aplicaciones</h6>
+                <h3>{{ stats.total_applications }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card orange">
+            <div class="card-body">
+                <h6 class="text-muted">Entrevistas</h6>
+                <h3>{{ stats.interviews }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card red">
+            <div class="card-body">
+                <h6 class="text-muted">Tasa de Éxito</h6>
+                {% if stats.total_applications > 0 %}
+                <h3>{{ ((stats.interviews / stats.total_applications) * 100)|round(1) }}%</h3>
+                {% else %}
+                <h3>0%</h3>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Estado de Ofertas</h5>
+            </div>
+            <div class="card-body">
+                {% if stats.status_counts %}
+                <ul class="list-group">
+                    {% for status, count in stats.status_counts.items() %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ status }}
+                        <span class="badge bg-primary rounded-pill">{{ count }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-muted">No hay datos</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Acciones Rápidas</h5>
+            </div>
+            <div class="card-body">
+                <a href="/api/search" class="btn btn-primary mb-2"><i class="bi bi-search"></i> Buscar Ofertas</a>
+                <a href="/api/jobs" class="btn btn-success mb-2"><i class="bi bi-play"></i> Ejecutar Aplicaciones</a>
+                <a href="{{ url_for('web.jobs') }}" class="btn btn-info mb-2"><i class="bi bi-list"></i> Ver Todas las Ofertas</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

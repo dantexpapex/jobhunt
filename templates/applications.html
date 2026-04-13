@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Aplicaciones - JobHunt AI{% endblock %}
+
+{% block content %}
+<h2>Gestor de Aplicaciones</h2>
+
+<div class="row mt-4">
+    <div class="col-md-3">
+        <div class="card stat-card orange">
+            <div class="card-body">
+                <h6 class="text-muted">Pendientes de Revisión</h6>
+                <h3>{{ stats.pending_review }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card blue">
+            <div class="card-body">
+                <h6 class="text-muted">Listas para Aplicar</h6>
+                <h3>{{ stats.ready_to_apply }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card green">
+            <div class="card-body">
+                <h6 class="text-muted">Aplicadas</h6>
+                <h3>{{ stats.applied }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card red">
+            <div class="card-body">
+                <h6 class="text-muted">Auto-Fallidas</h6>
+                <h3>{{ stats.auto_failed }}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <h4>Pendientes de Revisión</h4>
+    <p class="text-muted">Revisa cada oferta antes de aplicar automáticamente</p>
+    
+    {% if pending_applications %}
+    <div class="list-group mt-3">
+        {% for app in pending_applications %}
+        <div class="list-group-item">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ app.job.title }}</h5>
+                <small>{{ app.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+            </div>
+            <p class="mb-1">
+                <i class="bi bi-building"></i> {{ app.job.company }} | 
+                <i class="bi bi-geo-alt"></i> {{ app.job.location }}
+            </p>
+            <p class="mb-1">
+                <span class="badge bg-secondary">{{ app.job.portal }}</span>
+                <span class="badge bg-{% if app.job.score >= 70 %}success{% elif app.job.score >= 50 %}warning{% else %}danger{% endif %}">
+                    Score: {{ app.job.score or 'N/A' }}
+                </span>
+            </p>
+            <div class="mt-2">
+                <a href="{{ app.job.url }}" target="_blank" class="btn btn-sm btn-outline-primary">Ver Oferta</a>
+                {% if app.cv_path %}
+                <a href="/{{ app.cv_path }}" target="_blank" class="btn btn-sm btn-outline-info">Ver CV</a>
+                {% endif %}
+                {% if app.cover_letter_path %}
+                <a href="/{{ app.cover_letter_path }}" target="_blank" class="btn btn-sm btn-outline-info">Ver Cover Letter</a>
+                {% endif %}
+                <form action="/api/apply/approve/{{ app.id }}" method="POST" class="d-inline">
+                    <button type="submit" class="btn btn-sm btn-success">Aprobar</button>
+                </form>
+                <form action="/api/apply/reject/{{ app.id }}" method="POST" class="d-inline">
+                    <input type="hidden" name="reason" value="Rejected by user">
+                    <button type="submit" class="btn btn-sm btn-danger">Rechazar</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info mt-3">No hay aplicaciones pendientes de revisión</div>
+    {% endif %}
+</div>
+
+<div class="mt-4">
+    <h4>Acciones</h4>
+    <form action="/api/apply/run" method="POST" class="d-inline">
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-play"></i> Ejecutar Aplicaciones
+        </button>
+    </form>
+    <a href="/api/apply/dashboard" class="btn btn-secondary">
+        <i class="bi bi-arrow-clockwise"></i> Actualizar
+    </a>
+</div>
+{% endblock %}

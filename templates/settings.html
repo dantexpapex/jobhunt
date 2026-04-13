@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Configuración - JobHunt AI{% endblock %}
+
+{% block content %}
+<h2>Configuración</h2>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Búsqueda</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="/api/settings">
+                    <div class="mb-3">
+                        <label class="form-label">Palabras Clave</label>
+                        <input type="text" class="form-control" name="keywords" value="software engineer,python,backend">
+                        <div class="form-text">Separadas por coma</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Ubicaciones</label>
+                        <input type="text" class="form-control" name="locations" value="Remote,United States">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Portales</label>
+                        <select class="form-select" name="portals" multiple>
+                            <option value="linkedin">LinkedIn</option>
+                            <option value="indeed">Indeed</option>
+                            <option value="glassdoor">Glassdoor</option>
+                            <option value="ziprecruiter">ZipRecruiter</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Aplicaciones</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="/api/settings">
+                    <div class="mb-3">
+                        <label class="form-label">Aplicación Automática</label>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" name="auto_apply">
+                            <label class="form-check-label">Habilitar</label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Umbral de Aplicación</label>
+                        <input type="number" class="form-control" name="apply_threshold" value="70">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Máximo de Aplicaciones/Día</label>
+                        <input type="number" class="form-control" name="max_applications" value="50">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>API Keys</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="/api/settings">
+                    <div class="mb-3">
+                        <label class="form-label">Gemini API Key</label>
+                        <input type="password" class="form-control" name="gemini_api_key">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">OpenAI API Key</label>
+                        <input type="password" class="form-control" name="openai_api_key">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Telegram</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="/api/settings">
+                    <div class="mb-3">
+                        <label class="form-label">Bot Token</label>
+                        <input type="text" class="form-control" name="telegram_token">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Chat ID</label>
+                        <input type="text" class="form-control" name="telegram_chat_id">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

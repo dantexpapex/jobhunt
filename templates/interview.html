@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Preparación de Interview - JobHunt AI{% endblock %}
+
+{% block content %}
+<h2>Preparación de Entrevista</h2>
+
+<div class="mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h5>Práctica de Entrevista</h5>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="/api/practice-interview">
+                <div class="mb-3">
+                    <label class="form-label">Posición</label>
+                    <input type="text" class="form-control" name="topic" placeholder="software engineer" value="software engineer">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Dificultad</label>
+                    <select class="form-select" name="difficulty">
+                        <option value="easy">Easy</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Generar Práctica</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Mis Preguntas Frecuentes</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    <li class="list-group-item">Tell me about yourself.</li>
+                    <li class="list-group-item">Why are you interested in this position?</li>
+                    <li class="list-group-item">What are your strengths and weaknesses?</li>
+                    <li class="list-group-item">Where do you see yourself in 5 years?</li>
+                    <li class="list-group-item">Why should we hire you?</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Consejos de Entrevista</h5>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li><strong>Sea específico:</strong> Use ejemplos concretos</li>
+                    <li><strong>Método STAR:</strong> Situation, Task, Action, Result</li>
+                    <li><strong>Investigue:</strong> Conozca la empresa</li>
+                    <li><strong>Prepares preguntas:</strong> Tenga 3-5 preguntas listas</li>
+                    <li><strong>Practique:</strong> Haga mock interviews</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h5>Salary Insights</h5>
+        </div>
+        <div class="card-body">
+            <form method="GET" action="/api/salary-insights">
+                <div class="row">
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="job_title" placeholder="software engineer">
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="location" placeholder="Remote" value="Remote">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100">Buscar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Estadísticas - JobHunt AI{% endblock %}
+
+{% block content %}
+<h2>Estadísticas</h2>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Resumen</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="card stat-card blue">
+                            <div class="card-body">
+                                <h6 class="text-muted">Total Ofertas</h6>
+                                <h3>{{ stats.total_jobs }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stat-card green">
+                            <div class="card-body">
+                                <h6 class="text-muted">Total Aplicaciones</h6>
+                                <h3>{{ stats.total_applications }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stat-card orange">
+                            <div class="card-body">
+                                <h6 class="text-muted">Entrevistas</h6>
+                                <h3>{{ stats.interviews }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stat-card red">
+                            <div class="card-body">
+                                <h6 class="text-muted">Tasa de Éxito</h6>
+                                {% if stats.total_applications > 0 %}
+                                <h3>{{ ((stats.interviews / stats.total_applications) * 100)|round(1) }}%</h3>
+                                {% else %}
+                                <h3>0%</h3>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Top Empresas</h5>
+            </div>
+            <div class="card-body">
+                {% if top_companies %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Empresa</th>
+                            <th>Ofertas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for company, count in top_companies %}
+                        <tr>
+                            <td>{{ company }}</td>
+                            <td>{{ count }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p class="text-muted">No hay datos</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Ofertas - JobHunt AI{% endblock %}
+
+{% block content %}
+<h2>Ofertas de Empleo</h2>
+
+<div class="mt-4">
+    <div class="btn-group mb-3">
+        <a href="{{ url_for('web.jobs') }}" class="btn btn-sm btn-outline-secondary {% if not status %}active{% endif %}">Todas</a>
+        <a href="{{ url_for('web.jobs', status='new') }}" class="btn btn-sm btn-outline-secondary {% if status=='new' %}active{% endif %}">Nuevas</a>
+        <a href="{{ url_for('web.jobs', status='evaluated') }}" class="btn btn-sm btn-outline-secondary {% if status=='evaluated' %}active{% endif %}">Evaluadas</a>
+        <a href="{{ url_for('web.jobs', status='applied') }}" class="btn btn-sm btn-outline-secondary {% if status=='applied' %}active{% endif %}">Aplicadas</a>
+        <a href="{{ url_for('web.jobs', status='interview') }}" class="btn btn-sm btn-outline-secondary {% if status=='interview' %}active{% endif %}">Entrevistas</a>
+    </div>
+</div>
+
+<div class="mt-4">
+    {% if jobs %}
+    <div class="list-group">
+        {% for job in jobs %}
+        <div class="list-group-item">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ job.title }}</h5>
+                <small>
+                    <span class="badge bg-{% if job.score >= 70 %}success{% elif job.score >= 50 %}warning{% else %}danger{% endif %}">
+                        Score: {{ job.score or 'N/A' }}
+                    </span>
+                </small>
+            </div>
+            <p class="mb-1">
+                <i class="bi bi-building"></i> {{ job.company }} | 
+                <i class="bi bi-geo-alt"></i> {{ job.location }} |
+                <i class="bi bi-laptop"></i> {{ job.remote_type or 'N/A' }}
+            </p>
+            <small class="text-muted">
+                {{ job.portal }} | {{ job.created_at.strftime('%Y-%m-%d') if job.created_at else '' }}
+                <span class="badge bg-secondary">{{ job.status }}</span>
+            </small>
+            <div class="mt-2">
+                <a href="{{ job.url }}" target="_blank" class="btn btn-sm btn-outline-primary">Ver Oferta</a>
+                <form action="{{ url_for('web.apply_to_job', job_id=job.id) }}" method="POST" class="d-inline">
+                    <button type="submit" class="btn btn-sm btn-success">Aplicar</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">No hay ofertas</div>
+    {% endif %}
+</div>
+{% endblock %}
